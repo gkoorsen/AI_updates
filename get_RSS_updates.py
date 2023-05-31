@@ -15,6 +15,43 @@ def get_feed_entries(feed_url):
     entries = feed.entries
     return entries
 
+def handle_interested():
+    print("You clicked 'I'm interested'.")
+
+def handle_later():
+    print("You clicked 'Show me again later'.")
+
+def handle_never():
+    print("You clicked 'Don't show me again'.")
+
+def popup_message(message):
+    popup = tk.Tk()
+    popup.title("Your Title Here")
+    
+    # Create a scrollbar
+    scrollbar = tk.Scrollbar(popup)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Create a text box with the scrollbar
+    text_box = tk.Text(popup, wrap=tk.WORD, yscrollcommand=scrollbar.set)
+    text_box.insert(tk.END, message)
+    text_box.pack()
+
+    # Connect scrollbar to text box
+    scrollbar.config(command=text_box.yview)
+
+    # Create buttons to handle responses
+    interested_button = tk.Button(popup, text="I'm interested", command=handle_interested)
+    interested_button.pack()
+
+    later_button = tk.Button(popup, text="Show me again later", command=handle_later)
+    later_button.pack()
+
+    never_button = tk.Button(popup, text="Don't show me again", command=handle_never)
+    never_button.pack()
+
+    popup.mainloop()
+
 def summarize_text(text):
     stop_words = set(stopwords.words("english"))
     words = word_tokenize(text)
@@ -85,7 +122,33 @@ def get_arxiv_updates():
         if entry.id not in read_articles:
             summary = summarize_text(entry.summary)
             if summary != '':
-                messagebox.showinfo(f"Title: {entry.title}", f"Summary: {summary}\n")
+                import tkinter as tk
+
+def popup_message(message):
+    popup = tk.Tk()
+    popup.title("Your Title Here")
+    
+    # Create a scrollbar
+    scrollbar = tk.Scrollbar(popup)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Create a text box with the scrollbar
+    text_box = tk.Text(popup, wrap=tk.WORD, yscrollcommand=scrollbar.set)
+    text_box.insert(tk.END, message)
+    text_box.pack()
+
+    # Connect scrollbar to text box
+    scrollbar.config(command=text_box.yview)
+
+    # Create a button to close the window
+    button = tk.Button(popup, text="OK", command=popup.destroy)
+    button.pack()
+
+    popup.mainloop()
+
+# Test the function
+                popup_message("This is a test message.")
+
                 user_input = messagebox.askyesno("Confirmation", "Is the article interesting?")
                 if user_input == 'no':
                     read_articles.add(entry.id)
